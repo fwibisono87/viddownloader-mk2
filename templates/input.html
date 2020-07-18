@@ -1,0 +1,28 @@
+<html>
+    <head>
+
+        <title>Input - Fwibisono's VidDownloader</title>
+
+    </head>
+
+    <div style="text-align: center;">
+        <body >
+             {% include 'includes/_navbar.html' %}
+             <h2 style="text-align: left;">Download Video</h2>
+             <div>
+                 <hr />
+                    <p>Insert your link in the space below:</p>
+             </div>
+             <hr />
+             <div style="text-align: center;">
+              <pre>
+                 <form action="/inres" method="POST" style="align-content: center;">
+                    URL   :   <input type="text" name = "URL"><br><br>
+                    <input type = "submit" value="Submit">
+                 </form>
+              </pre>
+            </div>
+        </body>
+    </div>
+
+</html>
