@@ -4,9 +4,9 @@ import wget
 import shutil
 import ffmpeg
 
-vidPath = os.join(os.getcwd(), 'temp', 'video.mp4')
-audPath = os.join(os.getcwd(), 'temp', 'audio.mp4')
-temPath = os.join(os.getcwd(), 'temp', 'temp.mp4')
+vidPath = os.path.join(os.getcwd(), 'temp', 'video.mp4')
+audPath = os.path.join(os.getcwd(), 'temp', 'audio.mp4')
+temPath = os.path.join(os.getcwd(), 'temp', 'temp.mp4')
 
 
 def clean_directory():

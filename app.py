@@ -1,4 +1,5 @@
 from flask import Flask
+import wtforms
 import youtube
 
 app = Flask(__name__)
