@@ -1,5 +1,5 @@
 from flask import Flask
-import main
+import youtube
 
 app = Flask(__name__)
 
