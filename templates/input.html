@@ -8,7 +8,7 @@
     <div>
         <body >
              {% include 'includes/_header.html' %}
-             <h2 style="text-align: left;">Download Video</h2>
+             <h2 style="text-align: left;">Input Video Link</h2>
              <div>
                  <hr/>
                     <p>Insert your link in the space below:</p>
@@ -18,14 +18,6 @@
               <pre>
                  <form action="/inres" method="POST">
                      URL        :<input type="text" name = "URL"><br><br>
-                     Resolution :<select>
-                                    <option value = "1080p">1080p</option>
-                                    <option value = "720p">720p</option>
-                                    <option value = "480p">480p</option>
-                                    <option value = "360p">360p</option>
-                                    <option value = "240p">240p</option>
-                                    <option value = "144p">144p</option>
-                                </select>
                      <hr/>
                     <input type = "submit" value="Submit">
                  </form>

@@ -4,7 +4,7 @@ import shutil
 
 vidPath = os.path.join(os.getcwd(), 'temp', 'video.mp4')
 audPath = os.path.join(os.getcwd(), 'temp', 'audio.mp4')
-temPath = os.path.join(os.getcwd(), 'temp', 'temp.mp4')
+temPath = os.path.join(os.getcwd(), 'temp', 'temp')
 
 
 def clean_directory():
@@ -57,7 +57,8 @@ def youtube_get_title(video):
     return title
 
 
-def youtube_choose_resolution(video, resolution):
+#This function is disabled until we can find a fast and reliable way to download two fucking streams
+'''def youtube_choose_resolution(video, resolution):
     """
     Finds Youtube stream from a list of streams
     :param video:
@@ -66,19 +67,19 @@ def youtube_choose_resolution(video, resolution):
     """
     try:
         if resolution == "1080p":
-            vid = video.streams.filter(resolution="1080p").filter(progressive=True) \
+            vid = video.streams.filter(resolution="1080p").filter(adaptive=True) \
                 .filter(mime_type="video/mp4").first()
         elif resolution == "720p":
-            vid = video.streams.filter(resolution="720p").filter(progressive=True) \
+            vid = video.streams.filter(resolution="720p").filter(adaptive=True) \
                 .filter(mime_type="video/mp4").first()
         elif resolution == "360p":
-            vid = video.streams.filter(resolution="360p").filter(progressive=True) \
+            vid = video.streams.filter(resolution="360p").filter(adaptive=True) \
                 .filter(mime_type="video/mp4").first()
         elif resolution == "240p":
-            vid = video.streams.filter(resolution="240p").filter(progressive=True) \
+            vid = video.streams.filter(resolution="240p").filter(adaptive=True) \
                 .filter(mime_type="video/mp4").first()
         elif resolution == "144p":
-            vid = video.streams.filter(resolution="144p").filter(progressive=True) \
+            vid = video.streams.filter(resolution="144p").filter(adaptive=True) \
                 .filter(mime_type="video/mp4").first()
         if vid.isnull():
             raise ValueError("Stream resolution not found, try lowering resolution!")
@@ -86,22 +87,22 @@ def youtube_choose_resolution(video, resolution):
     except ValueError:
         print(ValueError)
 
-    return vid
+    return vid'''
 
-
-def youtube_get_audio(video):
+#This function is temporarily disabled until we need to download seperate streams again
+'''def youtube_get_audio(video):
     """
     Retrieves audio stream from YouTube object
     :param video: YouTube
     :return: aud
     """
-    aud = video.streams.filter(progressive=True) \
+    aud = video.streams.filter(adaptive=True) \
         .filter(mime_type="audio/mp4").order_by('abr').desc().first()
 
-    return aud
+    return aud'''
 
-
-def youtube_download(video, audio):
+#This function is temporarily disabled to allow for integrated resolution and download function
+'''def youtube_download(video, audio):
     """
     Downloads a video and audio stream to local disk
     :param video: Video Stream
@@ -113,10 +114,10 @@ def youtube_download(video, audio):
         video.download(vidPath)
         audio.download(audPath)
     except TypeError:
-        print(TypeError)
+        print(TypeError)'''
 
-
-def youtube_join(video):
+#This function is temporarily disabled as we have no need to join audio and video streams
+'''def youtube_join(video):
     """
     Mixes audio and video streams, and renames it to the title, and returns exporting path
     :param video:
@@ -127,6 +128,17 @@ def youtube_join(video):
     os.system('ffmpeg -i %s -i %s -c:v copy -c:a aac %s' % (vidPath, audPath, temPath))
     expPath = os.path.join(os.getcwd(), 'videos', '%s.mp4' % title)
     shutil.move(temPath, expPath)
+
+    return expPath'''
+
+
+def download_progressive(youtube):
+    youtube.streams.order_by('resolution').desc().filter(progressive=True).filter(mime_type="video/mp4") \
+        .first().download(os.path.join(os.getcwd(), 'temp'), 'temp')
+
+    title = clean_title(youtube_get_title(youtube))
+    expPath = os.path.join(os.getcwd(), 'videos', '%s.mp4' % title)
+    shutil.move("{}.mp4".format(temPath), expPath)
 
     return expPath
 
