@@ -4,16 +4,15 @@ import wget
 import shutil
 import ffmpeg
 
-
 vidPath = os.join(os.getcwd(), 'temp', 'video.mp4')
 audPath = os.join(os.getcwd(), 'temp', 'audio.mp4')
 temPath = os.join(os.getcwd(), 'temp', 'temp.mp4')
 
 
-def CleanDirectory():
-    '''
+def clean_directory():
+    """
     Clears temp and downloads folder
-    '''
+    """
     if not os.exist(os.join(os.getcwd(), 'temp')):
         os.mkdir(os.join(os.getcwd(), 'temp'))
     else:
@@ -26,12 +25,12 @@ def CleanDirectory():
         os.mkdir(os.join(os.getcwd(), 'downloads'))
 
 
-def YTParseLink(link):
-    '''
+def youtube_parse_link(link):
+    """
     Parses a YouTube Link \n
     :param link: string \n
     :return video: a YouTube object
-    '''
+    """
     try:
         if type(link) is not str:
             raise TypeError("Link has to be of type str")
@@ -43,19 +42,30 @@ def YTParseLink(link):
     return video
 
 
-def YTGetTitle(video):
+def youtube_get_title(video):
+    """
+    Returns title from a YouTube object
+    :param video: YouTube \n
+    :return title: String
+    """
     try:
         if type(video) is not YouTube:
             raise TypeError("Video has to be of type YouTube")
     except TypeError:
         print(TypeError)
 
-    title = CleanTitle(video.title)
+    title = clean_title(video.title)
 
     return title
 
 
-def YTChooseResolution(video, resolution):
+def youtube_choose_resolution(video, resolution):
+    """
+    Finds Youtube stream from a list of streans
+    :param video:
+    :param resolution:
+    :return vid:
+    """
     try:
         if resolution == "1080p":
             vid = video.streams.filter(resolution="1080p").filter(progressive=True) \
@@ -81,23 +91,41 @@ def YTChooseResolution(video, resolution):
     return vid
 
 
-def YTGetAudio(video):
+def youtube_get_audio(video):
+    """
+    Retrieves audio stream from YouTube object
+    :param video: YouTube
+    :return: aud
+    """
     aud = video.streams.filter(progressive=True) \
         .filter(mime_type="audio/mp4").order_by('abr').desc().first()
 
     return aud
 
 
-def YTDownload(video):
+def youtube_download(video, audio):
+    """
+    Downloads a video and audio stream to local disk
+    :param video: Video Stream
+    :param audio: Audio Stream
+    """
     try:
         if type(video) is not YouTube:
             raise TypeError("Video has to be of type YouTube")
+        video.download(vidPath)
+        audio.download(audPath)
     except TypeError:
         print(TypeError)
 
 
-def YTJoin(video):
-    title = YTGetTitle(video)
+def youtube_join(video):
+    """
+    Mixes audio and video streams, and renames it to the title, and returns exporting path
+    :param video:
+    :return: expPath
+    """
+    original_title = youtube_get_title(video)
+    title = clean_title(original_title)
     os.system('ffmpeg -i %s -i %s -c:v copy -c:a aac %s' % (vidPath, audPath, temPath))
     expPath = os.path.join(os.getcwd(), 'videos', '%s.mp4' % title)
     shutil.move(temPath, expPath)
@@ -105,7 +133,12 @@ def YTJoin(video):
     return expPath
 
 
-def CleanTitle(title):
+def clean_title(title):
+    """
+    Checks and removes forbidden characters from a title
+    :param title:
+    :return:
+    """
     try:
         if type(title) is not str:
             raise TypeError("Title has to be of type str")
@@ -116,5 +149,3 @@ def CleanTitle(title):
         .replace("|", "").replace("/", "").replace('?', "").replace("*", "")
 
     return cleaned
-
-
