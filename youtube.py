@@ -1,8 +1,6 @@
 from pytube import YouTube
 import os
-import wget
 import shutil
-import ffmpeg
 
 vidPath = os.path.join(os.getcwd(), 'temp', 'video.mp4')
 audPath = os.path.join(os.getcwd(), 'temp', 'audio.mp4')
@@ -61,7 +59,7 @@ def youtube_get_title(video):
 
 def youtube_choose_resolution(video, resolution):
     """
-    Finds Youtube stream from a list of streans
+    Finds Youtube stream from a list of streams
     :param video:
     :param resolution:
     :return vid:
