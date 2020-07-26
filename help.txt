@@ -1,0 +1,4 @@
+Enter    "help"      to view this message
+Enter    "exit"      to exit this program
+Enter    "clean"     to clean temporary and download directory
+Enter    "download"  to insert target link
